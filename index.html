@@ -1,3 +1,7 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}</style>
+</head><body>
 <title>Apex</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
 <style>
@@ -157,9 +161,8 @@ dialog h3{margin:0 0 12px;font-family:var(--display);font-size:1.3rem;text-trans
 </dialog>
 
 <script>
-const PIN_HASH = '33dc0ba86008f4434bd43d050df9022209367483c1eef5280b25da861c32f6ad';
 const $ = id => document.getElementById(id);
-let entries = [], col = null, view = new Date(), selected = null, editingId = null;
+let entries = [], password = '', view = new Date(), selected = null, editingId = null;
 view.setDate(1);
 const monday = d => { const m=new Date(d); m.setHours(0,0,0,0); m.setDate(m.getDate()-((m.getDay()+6)%7)); return m; };
 let wkStart = monday(new Date());
@@ -287,7 +290,7 @@ function renderDay(){
     const acts=document.createElement('div'); acts.className='acts';
     const ed=document.createElement('button'); ed.type='button'; ed.className='link'; ed.textContent='Edit'; ed.onclick=()=>startEdit(e);
     const del=document.createElement('button'); del.type='button'; del.className='link del'; del.textContent='Remove';
-    del.onclick=async()=>{ if(del.dataset.armed){ try{ await col.doc(e.id).delete(); if(editingId===e.id) stopEdit(); }catch(err){status('Could not remove: '+(err.message||err.code),true);} } else {del.dataset.armed=1;del.textContent='Confirm';setTimeout(()=>{delete del.dataset.armed;del.textContent='Remove';},3000);} };
+    del.onclick=async()=>{ if(del.dataset.armed){ try{ setShifts((await api('POST',{op:'delete',id:e.id})).shifts); if(editingId===e.id) stopEdit(); }catch(err){status('Could not remove: '+(err.message||err.code),true);} } else {del.dataset.armed=1;del.textContent='Confirm';setTimeout(()=>{delete del.dataset.armed;del.textContent='Remove';},3000);} };
     acts.append(ed,del); li.append(s,acts); L.append(li);
   });
   L.hidden=!L.children.length;
@@ -332,43 +335,55 @@ $('from').onchange=$('to').onchange=renderTotals;
 
 $('f').addEventListener('submit', async ev=>{
   ev.preventDefault();
-  if(!col) return status('Not connected. Sign in to save shifts.', true);
   const raw=$('name').value.trim().replace(/\s+/g,' '), start=$('start').value, end=$('end').value;
   if(!raw||!start||!end||!selected) return;
   const known=entries.find(e=>e.name.toLowerCase()===raw.toLowerCase());
   const body={name:known?known.name:raw, start, end, hours:hoursBetween(start,end)};
   try{
     if(editingId){
-      await col.doc(editingId).update({...body, date:$('date').value||selected, updatedAt:Date.now()});
+      setShifts((await api('POST',{op:'update',id:editingId,shift:{...body, date:$('date').value||selected}})).shifts);
       stopEdit(); status('Shift updated');
     } else {
-      await col.add({...body, date:selected, createdAt:Date.now()});
+      setShifts((await api('POST',{op:'add',shift:{...body, date:selected}})).shifts);
       $('name').value=''; $('name').focus(); status('Saved');
     }
   }catch(err){ status('Could not save: '+(err.message||err.code), true); }
 });
 
-async function sha(t){ const b=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+async function api(method, body){
+  const res = await fetch('/api/shifts', {method, headers:{'content-type':'application/json','x-apex-password':password}, body: body?JSON.stringify(body):undefined, cache:'no-store'});
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok){ const e=new Error(data.error||('Server error '+res.status)); e.status=res.status; throw e; }
+  return data;
+}
+function setShifts(list){ entries=(list||[]).filter(e=>e.name&&e.date&&typeof e.hours==='number'); status(entries.length+' shifts saved'); render(); }
+async function refresh(){
+  try{ setShifts((await api('GET')).shifts); }
+  catch(err){
+    if(err.status===401){ try{ sessionStorage.removeItem('apexPw'); }catch{} location.reload(); return; }
+    status('Could not load shifts: '+err.message, true);
+  }
+}
 
 let started=false;
 async function start(){
   if(started) return; started=true;
   $('lock').hidden=true; $('app').hidden=false;
   setRangeToMonth(); render();
-  const db=await window.claude?.use?.('db');
-  if(!db){ status('Read-only: sign in to load and save shifts.', true); return; }
-  col=db.collection('shifts');
-  col.onSnapshot(s=>{
-    entries=s.docs.map(d=>({id:d.id,...d.data()})).filter(e=>e.name&&e.date&&typeof e.hours==='number');
-    status(entries.length+' shifts saved'); render();
-  }, err=>status('Lost connection: '+(err.message||err.code), true));
+  if(!entries.length) await refresh();
+  // pick up shifts other people logged
+  setInterval(()=>{ if(!document.hidden && !$('dlg').open) refresh(); }, 30000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(); });
 }
 
 $('lockForm').addEventListener('submit', async ev=>{
   ev.preventDefault();
-  if(await sha($('pin').value)===PIN_HASH){ try{ sessionStorage.setItem('apexUnlocked','1'); }catch{} start(); }
-  else { $('pinErr').hidden=false; $('pin').value=''; $('pin').focus(); }
+  password=$('pin').value;
+  try{ const d=await api('GET'); try{ sessionStorage.setItem('apexPw',password); }catch{} setShifts(d.shifts); await start(); }
+  catch(err){ $('pinErr').textContent = err.status===401 ? 'Wrong password. Try again.' : 'Could not reach the server: '+err.message; $('pinErr').hidden=false; $('pin').value=''; $('pin').focus(); }
 });
-let unlocked=false; try{ unlocked=sessionStorage.getItem('apexUnlocked')==='1'; }catch{}
-if(unlocked) start(); else $('pin').focus();
+try{ password=sessionStorage.getItem('apexPw')||''; }catch{}
+if(password) start(); else $('pin').focus();
 </script>
+
+</body></html>
