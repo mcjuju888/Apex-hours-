@@ -97,6 +97,28 @@ dialog h3{margin:0 0 12px;font-family:var(--display);font-size:1.3rem;text-trans
 #lock button{width:100%}
 </style>
 
+<style>
+.hdr-r{display:flex;align-items:center;gap:12px}
+.emps{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px;margin:6px 0 14px}
+.emp{display:grid;justify-items:center;gap:2px;padding:12px 4px;border:1px solid var(--line);border-radius:6px;background:var(--raise);color:var(--fg);text-transform:none;letter-spacing:0;font-weight:500}
+.emp b{font-family:var(--display);font-size:1.6rem;font-weight:700;letter-spacing:.04em;line-height:1}
+.emp small{font-size:.7rem;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.emp:hover{border-color:var(--fg)}
+.emp[aria-pressed="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.emp[aria-pressed="true"] small{color:var(--accent-fg)}
+.emp:disabled{opacity:.35;cursor:default}
+.emp:disabled:hover{border-color:var(--line)}
+.sub{font-family:var(--display);text-transform:uppercase;letter-spacing:.1em;font-size:.85rem;color:var(--muted);margin:0}
+.times{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 4px}
+dialog.wide{width:min(560px,calc(100vw - 32px))}
+.erow{display:grid;grid-template-columns:minmax(0,1fr) 64px auto;gap:8px;align-items:center}
+.drow{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center}
+.drow span{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.stack{display:grid;gap:8px;margin:8px 0 18px}
+.ini-in{text-transform:uppercase;text-align:center}
+.foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:8px}
+</style>
+
 <div id="lock">
   <form id="lockForm">
     <img class="logo" src="data:image/png;base64,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" alt="Apex Training Centre">
@@ -110,7 +132,10 @@ dialog h3{margin:0 0 12px;font-family:var(--display);font-size:1.3rem;text-trans
 <main id="app" hidden>
   <header>
     <img class="logo" src="data:image/png;base64,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" alt="Apex Training Centre">
-    <p class="msg" id="status">Connecting…</p>
+    <div class="hdr-r">
+      <p class="msg" id="status">Connecting…</p>
+      <button class="ghost" id="settingsBtn">Settings</button>
+    </div>
   </header>
 
   <section>
@@ -146,122 +171,125 @@ dialog h3{margin:0 0 12px;font-family:var(--display);font-size:1.3rem;text-trans
 <dialog id="dlg">
   <h3 id="dlgTitle"></h3>
   <ul class="list" id="dayList"></ul>
-  <form id="f" class="form">
-    <label class="full">Employee<input id="name" list="names" required autocomplete="off" placeholder="Full name"></label>
-    <datalist id="names"></datalist>
-    <label class="full" id="dateWrap" hidden>Date<input id="date" type="date"></label>
-    <label>Start<input id="start" type="time" step="900" required value="14:00"></label>
-    <label>End<input id="end" type="time" step="900" required value="21:00"></label>
-    <p class="msg full" id="calc"></p>
-    <div class="full row">
-      <button type="button" class="ghost" id="close">Done</button>
-      <div class="btns"><button type="button" class="ghost" id="cancelEdit" hidden>Cancel edit</button><button type="submit" id="submitBtn">Log shift</button></div>
-    </div>
-  </form>
+  <p class="sub" id="timesLabel">Shift time</p>
+  <div class="times">
+    <label>Start<input id="start" type="time" step="900" required></label>
+    <label>End<input id="end" type="time" step="900" required></label>
+  </div>
+  <p class="msg" id="calc"></p>
+  <label id="dateWrap" hidden style="margin-top:8px">Move to date<input id="date" type="date"></label>
+  <p class="sub" id="empLabel" style="margin-top:14px">Tap an employee to log</p>
+  <div class="emps" id="emps"></div>
+  <p class="msg" id="noEmps" hidden>No employees yet. Add them in Settings.</p>
+  <div class="foot">
+    <button type="button" class="ghost" id="close">Done</button>
+    <div class="btns"><button type="button" class="ghost" id="cancelEdit" hidden>Cancel edit</button><button type="button" id="saveEdit" hidden>Save changes</button></div>
+  </div>
+</dialog>
+
+<dialog id="settings" class="wide">
+  <h3>Settings</h3>
+  <p class="sub">Employees</p>
+  <div class="stack" id="empRows"></div>
+  <button type="button" class="ghost" id="addEmp">Add employee</button>
+  <p class="sub" style="margin-top:18px">Default shift times</p>
+  <div class="stack" id="dayRows"></div>
+  <p class="msg err" id="setErr" hidden></p>
+  <div class="foot">
+    <button type="button" class="ghost" id="setCancel">Cancel</button>
+    <button type="button" id="setSave">Save settings</button>
+  </div>
 </dialog>
 
 <script>
 const $ = id => document.getElementById(id);
-let entries = [], password = '', view = new Date(), selected = null, editingId = null;
+const DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+let shifts = [], employees = [], defaults = {}, password = '';
+let view = new Date(), selected = null, editingId = null, editEmp = null;
 view.setDate(1);
-const monday = d => { const m=new Date(d); m.setHours(0,0,0,0); m.setDate(m.getDate()-((m.getDay()+6)%7)); return m; };
-let wkStart = monday(new Date());
-let mode = matchMedia('(max-width:600px)').matches ? 'two' : 'month';
-try { mode = localStorage.getItem('apexMode') || mode; } catch {}
 const iso = d => new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
-const todayIso = iso(new Date());
+const todayIso = () => iso(new Date());
 const fmtH = h => (Math.round(h*100)/100).toString();
 const longDate = s => new Date(s+'T00:00').toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
 const shortDate = s => new Date(s+'T00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
+const sunday = d => { const m=new Date(d); m.setHours(0,0,0,0); m.setDate(m.getDate()-m.getDay()); return m; };
+let wkStart = sunday(new Date());
+let mode = matchMedia('(max-width:600px)').matches ? 'two' : 'month';
+try { mode = localStorage.getItem('apexMode') || mode; } catch {}
 
-function initials(n){ const p=n.trim().split(/\s+/); return (p.length>1 ? p.map(w=>w[0]).join('') : p[0].slice(0,2)).toUpperCase(); }
+function initialsOf(n){ const p=n.trim().split(/\s+/); return (p.length>1 ? p.map(w=>w[0]).join('') : p[0].slice(0,2)).toUpperCase(); }
+const empById = id => employees.find(e=>e.id===id);
+const nameOf = s => empById(s.employeeId)?.name || s.name;
+const iniOf = s => empById(s.employeeId)?.initials || initialsOf(nameOf(s));
 function mins(t){ const [h,m]=t.split(':').map(Number); return h*60+m; }
 function hoursBetween(s,e){ let d=mins(e)-mins(s); if(d<=0) d+=1440; return d/60; }
 function t12(t){ const [h,m]=t.split(':').map(Number); return {txt:(h%12||12)+(m?':'+String(m).padStart(2,'0'):''), ap:h<12?'am':'pm'}; }
 function span(s,e){ const a=t12(s), b=t12(e); return a.ap===b.ap ? `${a.txt}-${b.txt}${b.ap}` : `${a.txt}${a.ap}-${b.txt}${b.ap}`; }
-function label(e){ return e.start && e.end ? span(e.start,e.end) : fmtH(e.hours)+'h'; }
+const label = s => s.start && s.end ? span(s.start,s.end) : fmtH(s.hours)+'h';
+const dayDefault = k => defaults[new Date(k+'T00:00').getDay()] || {start:'14:00',end:'21:00'};
+const el = (tag, cls, text) => { const x=document.createElement(tag); if(cls) x.className=cls; if(text!==undefined) x.textContent=text; return x; };
+const byDate = () => { const m={}; shifts.forEach(s=>(m[s.date] ||= []).push(s)); for(const k in m) m[k].sort((a,b)=>(a.start||'').localeCompare(b.start||'')); return m; };
 
-function setRangeToMonth(){
+function setRangeToView(){
   if(mode==='two'){ const e=new Date(wkStart); e.setDate(e.getDate()+13); $('from').value=iso(wkStart); $('to').value=iso(e); return; }
   $('from').value = iso(new Date(view.getFullYear(), view.getMonth(), 1));
   $('to').value = iso(new Date(view.getFullYear(), view.getMonth()+1, 0));
 }
 
+function dayClick(node, k){
+  node.tabIndex=0; node.setAttribute('role','button'); node.setAttribute('aria-label',longDate(k));
+  node.onclick=()=>openDay(k);
+  node.onkeydown=ev=>{ if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openDay(k);} };
+}
+
 function renderCal(){
-  const g=$('grid'); g.replaceChildren(); g.className='grid '+mode;
+  const g=$('grid'); g.replaceChildren();
   $('tabTwo').setAttribute('aria-selected', mode==='two'); $('tabMonth').setAttribute('aria-selected', mode==='month');
-  if(mode==='two') return renderTwo(g);
-  ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d=>{const h=document.createElement('div');h.className='dow';h.textContent=d;g.append(h);});
-  let first, cells;
-  {
-    $('mlabel').textContent = view.toLocaleDateString(undefined,{month:'long',year:'numeric'});
-    const lead=(view.getDay()+6)%7;
-    first=new Date(view); first.setDate(1-lead);
-    const last=new Date(view.getFullYear(), view.getMonth()+1, 0);
-    cells=Math.ceil((lead+last.getDate())/7)*7;
-  }
-  const byDate={}; entries.forEach(e=>(byDate[e.date] ||= []).push(e));
+  const days=byDate(), today=todayIso();
+  if(mode==='two') return renderTwo(g, days, today);
+  g.className='grid month';
+  $('mlabel').textContent = view.toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  DAYS.forEach(d=>g.append(el('div','dow',d)));
+  const lead=view.getDay();
+  const first=new Date(view); first.setDate(1-lead);
+  const last=new Date(view.getFullYear(), view.getMonth()+1, 0);
+  const cells=Math.ceil((lead+last.getDate())/7)*7;
   for(let i=0;i<cells;i++){
     const d=new Date(first); d.setDate(first.getDate()+i); const k=iso(d);
-    const c=document.createElement('div');
-    c.className='day'+(mode==='month'&&d.getMonth()!==view.getMonth()?' out':'')+(k===todayIso?' today':'');
-    c.tabIndex=0; c.setAttribute('role','button'); c.setAttribute('aria-label',longDate(k));
-    const dh=document.createElement('div'); dh.className='dh';
-    const wd=document.createElement('span'); wd.className='wd'; wd.textContent=d.toLocaleDateString(undefined,{weekday:'short'});
-    const n=document.createElement('span'); n.className='num'; n.textContent=d.getDate();
-    dh.append(wd,n); const chips=document.createElement('div'); chips.className='chips'; c.append(dh,chips);
-    (byDate[k]||[]).sort((a,b)=>(a.start||'').localeCompare(b.start||'')).forEach(e=>{
-      const ch=document.createElement('div'); ch.className='chip'; ch.title=`${e.name} ${label(e)} (${fmtH(e.hours)}h)`;
-      const b=document.createElement('b'); b.textContent=initials(e.name);
-      const t=document.createElement('span'); t.className='t'; t.textContent=' '+label(e); ch.append(b,t); chips.append(ch);
+    const c=el('div','day'+(d.getMonth()!==view.getMonth()?' out':'')+(k===today?' today':''));
+    const dh=el('div','dh'); dh.append(el('span','num',d.getDate()));
+    const chips=el('div','chips'); c.append(dh,chips);
+    (days[k]||[]).forEach(s=>{
+      const ch=el('div','chip'); ch.title=`${nameOf(s)} ${label(s)} (${fmtH(s.hours)}h)`;
+      ch.append(el('b',null,iniOf(s)), el('span','t',' '+label(s))); chips.append(ch);
     });
-    c.onclick=()=>openDay(k);
-    c.onkeydown=ev=>{ if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openDay(k);} };
-    g.append(c);
+    dayClick(c,k); g.append(c);
   }
 }
 
-function renderTwo(g){
+function renderTwo(g, days, today){
   g.className='weeks';
   const f=d=>d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
   const end=new Date(wkStart); end.setDate(end.getDate()+13);
   $('mlabel').textContent=`${f(wkStart)} – ${f(end)}`;
-  const byDate={}; entries.forEach(e=>(byDate[e.date] ||= []).push(e));
   for(let w=0;w<2;w++){
     const ws=new Date(wkStart); ws.setDate(ws.getDate()+7*w);
-    const box=document.createElement('div'); box.className='wk';
-    const head=document.createElement('div'); head.className='wkh';
-    const hl=document.createElement('span'); hl.textContent='Week of '+f(ws);
-    const ht=document.createElement('b'); head.append(hl,ht); box.append(head);
+    const box=el('div','wk'), head=el('div','wkh'), ht=el('b');
+    head.append(el('span',null,'Week of '+f(ws)), ht); box.append(head);
     let wkHours=0;
     for(let i=0;i<7;i++){
       const d=new Date(ws); d.setDate(ws.getDate()+i); const k=iso(d);
-      const list=(byDate[k]||[]).sort((a,b)=>(a.start||'').localeCompare(b.start||''));
-      const r=document.createElement('div'); r.className='dr'+(k===todayIso?' today':'');
-      r.tabIndex=0; r.setAttribute('role','button'); r.setAttribute('aria-label',longDate(k));
-      const dd=document.createElement('div'); dd.className='dd';
-      const sm=document.createElement('small'); sm.textContent=d.toLocaleDateString(undefined,{weekday:'short'});
-      const dn=document.createElement('span'); dn.textContent=d.getDate(); dd.append(sm,dn);
-      const sh=document.createElement('div'); sh.className='shifts';
-      let dayH=0;
-      if(!list.length){ const em=document.createElement('span'); em.className='empty'; em.textContent='—'; sh.append(em); }
-      list.forEach(e=>{
-        dayH+=e.hours;
-        const row=document.createElement('div'); row.className='sh';
-        const ini=document.createElement('span'); ini.className='ini'; ini.textContent=initials(e.name);
-        const nm=document.createElement('span'); nm.className='nm'; nm.textContent=e.name;
-        const tm=document.createElement('span'); tm.className='tm'; tm.textContent=label(e);
-        row.append(ini,nm,tm); sh.append(row);
-      });
-      const hrs=document.createElement('span'); hrs.className='hrs'; hrs.textContent=dayH?fmtH(dayH)+'h':'';
+      const r=el('div','dr'+(k===today?' today':''));
+      const dd=el('div','dd'); dd.append(el('small',null,DAYS[d.getDay()]), el('span',null,d.getDate()));
+      const sh=el('div','shifts'); let dayH=0;
+      const list=days[k]||[];
+      if(!list.length) sh.append(el('span','empty','—'));
+      list.forEach(s=>{ dayH+=s.hours; const row=el('div','sh'); row.append(el('span','ini',iniOf(s)), el('span','nm',nameOf(s)), el('span','tm',label(s))); sh.append(row); });
       wkHours+=dayH;
-      r.append(dd,sh,hrs);
-      r.onclick=()=>openDay(k);
-      r.onkeydown=ev=>{ if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();openDay(k);} };
-      box.append(r);
+      r.append(dd, sh, el('span','hrs', dayH?fmtH(dayH)+'h':''));
+      dayClick(r,k); box.append(r);
     }
-    ht.textContent=fmtH(wkHours)+'h';
-    g.append(box);
+    ht.textContent=fmtH(wkHours)+'h'; g.append(box);
   }
 }
 
@@ -270,95 +298,155 @@ function renderTotals(){
   if(a&&b&&a>b) [a,b]=[b,a];
   $('rangeLabel').textContent = a&&b ? `${shortDate(a)} – ${shortDate(b)}` : 'Pick a date range.';
   const T=$('totals'); T.replaceChildren();
-  const by={};
-  entries.filter(e=>(!a||e.date>=a)&&(!b||e.date<=b)).forEach(e=>{(by[e.name] ||= {h:0,n:0}); by[e.name].h+=e.hours; by[e.name].n++;});
-  const names=Object.keys(by).sort((x,y)=>x.localeCompare(y));
-  const td=(t,c)=>{const x=document.createElement('td');x.textContent=t;if(c)x.className=c;return x;};
-  if(!names.length){const r=document.createElement('tr');const c=td('No hours logged in this range.','msg');c.colSpan=3;r.append(c);T.append(r);return;}
+  const by=new Map();
+  shifts.filter(s=>(!a||s.date>=a)&&(!b||s.date<=b)).forEach(s=>{
+    const key=s.employeeId||s.name; const t=by.get(key)||{name:nameOf(s), ini:iniOf(s), h:0, n:0};
+    t.h+=s.hours; t.n++; by.set(key,t);
+  });
+  const rows=[...by.values()].sort((x,y)=>x.name.localeCompare(y.name));
+  if(!rows.length){ const r=el('tr'), c=el('td','msg','No hours logged in this range.'); c.colSpan=3; r.append(c); T.append(r); return; }
   let gh=0,gn=0;
-  names.forEach(n=>{const r=document.createElement('tr');r.append(td(`${n} (${initials(n)})`),td(by[n].n,'r'),td(fmtH(by[n].h),'r'));T.append(r);gh+=by[n].h;gn+=by[n].n;});
-  const r=document.createElement('tr');r.className='total';r.append(td('Total'),td(gn,'r'),td(fmtH(gh),'r'));T.append(r);
+  rows.forEach(t=>{ const r=el('tr'); r.append(el('td',null,`${t.name} (${t.ini})`), el('td','r',t.n), el('td','r',fmtH(t.h))); T.append(r); gh+=t.h; gn+=t.n; });
+  const r=el('tr','total'); r.append(el('td',null,'Total'), el('td','r',gn), el('td','r',fmtH(gh))); T.append(r);
 }
 
 function renderDay(){
   if(!selected) return;
   $('dlgTitle').textContent=longDate(selected);
   const L=$('dayList'); L.replaceChildren();
-  entries.filter(e=>e.date===selected).sort((a,b)=>(a.start||'').localeCompare(b.start||'')).forEach(e=>{
-    const li=document.createElement('li'); if(e.id===editingId) li.className='editing';
-    const s=document.createElement('span'); s.textContent=`${e.name} · ${label(e)} · ${fmtH(e.hours)}h`;
-    const acts=document.createElement('div'); acts.className='acts';
-    const ed=document.createElement('button'); ed.type='button'; ed.className='link'; ed.textContent='Edit'; ed.onclick=()=>startEdit(e);
-    const del=document.createElement('button'); del.type='button'; del.className='link del'; del.textContent='Remove';
-    del.onclick=async()=>{ if(del.dataset.armed){ try{ setShifts((await api('POST',{op:'delete',id:e.id})).shifts); if(editingId===e.id) stopEdit(); }catch(err){status('Could not remove: '+(err.message||err.code),true);} } else {del.dataset.armed=1;del.textContent='Confirm';setTimeout(()=>{delete del.dataset.armed;del.textContent='Remove';},3000);} };
-    acts.append(ed,del); li.append(s,acts); L.append(li);
+  const list=byDate()[selected]||[];
+  list.forEach(s=>{
+    const li=el('li', s.id===editingId?'editing':'');
+    const acts=el('div','acts');
+    const ed=el('button','link','Edit'); ed.type='button'; ed.onclick=()=>startEdit(s);
+    const del=el('button','link del','Remove'); del.type='button';
+    del.onclick=async()=>{
+      if(!del.dataset.armed){ del.dataset.armed=1; del.textContent='Confirm'; setTimeout(()=>{ delete del.dataset.armed; del.textContent='Remove'; },3000); return; }
+      try{ apply(await api('POST',{op:'delete',id:s.id})); if(editingId===s.id) stopEdit(); status('Shift removed'); }
+      catch(err){ status('Could not remove: '+err.message,true); }
+    };
+    acts.append(ed,del); li.append(el('span',null,`${nameOf(s)} · ${label(s)} · ${fmtH(s.hours)}h`), acts); L.append(li);
   });
-  L.hidden=!L.children.length;
+  L.hidden=!list.length;
+
+  const logged=new Set(list.map(s=>s.employeeId||s.name));
+  const E=$('emps'); E.replaceChildren();
+  employees.forEach(e=>{
+    const b=el('button','emp'); b.type='button';
+    b.append(el('b',null,e.initials), el('small',null,e.name));
+    if(editingId){
+      b.setAttribute('aria-pressed', e.id===editEmp?.id);
+      b.onclick=()=>{ editEmp=e; renderDay(); };
+    } else {
+      b.disabled=logged.has(e.id)||logged.has(e.name);
+      b.title=b.disabled?`${e.name} is already logged today`:`Log ${e.name}`;
+      b.onclick=()=>logShift(e,b);
+    }
+    E.append(b);
+  });
+  $('noEmps').hidden=!!employees.length;
+  $('empLabel').textContent = editingId ? 'Employee' : 'Tap an employee to log';
+  $('timesLabel').textContent = editingId ? 'Edit shift' : `Shift time (${DAYS[new Date(selected+'T00:00').getDay()]} default)`;
 }
+
 function updateCalc(){ const s=$('start').value,e=$('end').value; $('calc').textContent = s&&e ? `${span(s,e)} = ${fmtH(hoursBetween(s,e))} hours` : ''; }
 
-function startEdit(e){
-  editingId=e.id;
-  $('name').value=e.name; $('start').value=e.start||'14:00'; $('end').value=e.end||'21:00'; $('date').value=e.date;
-  $('dateWrap').hidden=false; $('cancelEdit').hidden=false; $('submitBtn').textContent='Save changes';
-  updateCalc(); renderDay(); $('name').focus();
+async function logShift(e, btn){
+  const start=$('start').value, end=$('end').value;
+  if(!start||!end) return status('Pick a start and end time first.', true);
+  btn.disabled=true;
+  try{ apply(await api('POST',{op:'add',shift:{employeeId:e.id,name:e.name,date:selected,start,end,hours:hoursBetween(start,end)}})); status(`Logged ${e.initials} ${span(start,end)}`); }
+  catch(err){ btn.disabled=false; status('Could not save: '+err.message,true); }
+}
+
+function startEdit(s){
+  editingId=s.id; editEmp=empById(s.employeeId)||{id:s.employeeId,name:s.name,initials:initialsOf(s.name)};
+  $('start').value=s.start||dayDefault(s.date).start; $('end').value=s.end||dayDefault(s.date).end; $('date').value=s.date;
+  $('dateWrap').hidden=false; $('cancelEdit').hidden=false; $('saveEdit').hidden=false;
+  updateCalc(); renderDay();
 }
 function stopEdit(){
-  editingId=null; $('name').value=''; $('dateWrap').hidden=true; $('cancelEdit').hidden=true; $('submitBtn').textContent='Log shift';
+  editingId=null; editEmp=null;
+  $('dateWrap').hidden=true; $('cancelEdit').hidden=true; $('saveEdit').hidden=true;
+  if(selected){ const d=dayDefault(selected); $('start').value=d.start; $('end').value=d.end; updateCalc(); }
   renderDay();
 }
+$('saveEdit').onclick=async()=>{
+  const start=$('start').value, end=$('end').value;
+  if(!start||!end||!editEmp) return;
+  try{
+    apply(await api('POST',{op:'update',id:editingId,shift:{employeeId:editEmp.id,name:editEmp.name,date:$('date').value||selected,start,end,hours:hoursBetween(start,end)}}));
+    stopEdit(); status('Shift updated');
+  }catch(err){ status('Could not save: '+err.message,true); }
+};
 
-function render(){
-  renderCal(); renderTotals(); renderDay();
-  $('names').replaceChildren(...[...new Set(entries.map(e=>e.name))].sort().map(n=>{const o=document.createElement('option');o.value=n;return o;}));
-}
+function render(){ renderCal(); renderTotals(); renderDay(); }
 function status(t,bad){ $('status').textContent=t; $('status').className='msg'+(bad?' err':''); }
+function apply(d){
+  shifts=(d.shifts||[]).filter(s=>s.name&&s.date&&typeof s.hours==='number');
+  employees=d.employees||[]; defaults=d.defaults||{};
+  render();
+}
 
-function openDay(k){ selected=k; stopEdit(); updateCalc(); $('dlg').showModal(); $('name').focus(); }
+function openDay(k){ selected=k; stopEdit(); $('dlg').showModal(); }
 $('close').onclick=()=>$('dlg').close();
 $('cancelEdit').onclick=stopEdit;
-$('dlg').addEventListener('close',()=>{ editingId=null; selected=null; });
+$('dlg').addEventListener('close',()=>{ editingId=null; editEmp=null; selected=null; });
 $('start').oninput=$('end').oninput=updateCalc;
-function step(n){ if(mode==='two') wkStart.setDate(wkStart.getDate()+14*n); else view.setMonth(view.getMonth()+n); setRangeToMonth(); render(); }
+function step(n){ if(mode==='two') wkStart.setDate(wkStart.getDate()+14*n); else view.setMonth(view.getMonth()+n); setRangeToView(); render(); }
 $('prev').onclick=()=>step(-1);
 $('next').onclick=()=>step(1);
-$('todayBtn').onclick=()=>{ view=new Date(); view.setDate(1); wkStart=monday(new Date()); setRangeToMonth(); render(); };
+$('todayBtn').onclick=()=>{ view=new Date(); view.setDate(1); wkStart=sunday(new Date()); setRangeToView(); render(); };
+$('from').onchange=$('to').onchange=renderTotals;
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
   if(mode===b.dataset.mode) return;
   mode=b.dataset.mode; try{ localStorage.setItem('apexMode',mode); }catch{}
   // keep the two views on the same stretch of time when switching
-  if(mode==='two'){ const t=monday(new Date()); wkStart = (t.getMonth()===view.getMonth()&&t.getFullYear()===view.getFullYear()) ? t : monday(view); }
+  if(mode==='two'){ const t=sunday(new Date()); wkStart=(t.getMonth()===view.getMonth()&&t.getFullYear()===view.getFullYear())?t:sunday(view); }
   else { view=new Date(wkStart); view.setDate(1); }
-  setRangeToMonth(); render();
-});
-$('from').onchange=$('to').onchange=renderTotals;
-
-$('f').addEventListener('submit', async ev=>{
-  ev.preventDefault();
-  const raw=$('name').value.trim().replace(/\s+/g,' '), start=$('start').value, end=$('end').value;
-  if(!raw||!start||!end||!selected) return;
-  const known=entries.find(e=>e.name.toLowerCase()===raw.toLowerCase());
-  const body={name:known?known.name:raw, start, end, hours:hoursBetween(start,end)};
-  try{
-    if(editingId){
-      setShifts((await api('POST',{op:'update',id:editingId,shift:{...body, date:$('date').value||selected}})).shifts);
-      stopEdit(); status('Shift updated');
-    } else {
-      setShifts((await api('POST',{op:'add',shift:{...body, date:selected}})).shifts);
-      $('name').value=''; $('name').focus(); status('Saved');
-    }
-  }catch(err){ status('Could not save: '+(err.message||err.code), true); }
+  setRangeToView(); render();
 });
 
+/* Settings */
+function empRow(e){
+  const r=el('div','erow'); r.dataset.id=e.id||'';
+  const n=el('input'); n.value=e.name||''; n.placeholder='Full name'; n.className='nm-in'; n.setAttribute('aria-label','Employee name');
+  const i=el('input','ini-in'); i.value=e.initials||''; i.maxLength=3; i.placeholder='JD'; i.setAttribute('aria-label','Initials');
+  n.oninput=()=>{ if(!i.dataset.touched) i.value=n.value.trim()?initialsOf(n.value):''; };
+  i.oninput=()=>{ i.dataset.touched=1; };
+  if(e.initials) i.dataset.touched=1;
+  const x=el('button','link del','Remove'); x.type='button'; x.onclick=()=>r.remove();
+  r.append(n,i,x); return r;
+}
+$('settingsBtn').onclick=()=>{
+  $('empRows').replaceChildren(...employees.map(empRow));
+  $('dayRows').replaceChildren(...DAYS.map((d,idx)=>{
+    const r=el('div','drow'); const t=defaults[idx]||{start:'',end:''};
+    const s=el('input'); s.type='time'; s.step=900; s.value=t.start; s.setAttribute('aria-label',d+' start');
+    const e=el('input'); e.type='time'; e.step=900; e.value=t.end; e.setAttribute('aria-label',d+' end');
+    r.append(el('span',null,d), s, e); return r;
+  }));
+  $('setErr').hidden=true; $('settings').showModal();
+};
+$('addEmp').onclick=()=>{ const r=empRow({}); $('empRows').append(r); r.querySelector('input').focus(); };
+$('setCancel').onclick=()=>$('settings').close();
+$('setSave').onclick=async()=>{
+  const emps=[...$('empRows').children].map(r=>({id:r.dataset.id||undefined, name:r.children[0].value.trim(), initials:r.children[1].value.trim()})).filter(e=>e.name);
+  const defs={}; [...$('dayRows').children].forEach((r,idx)=>{ defs[idx]={start:r.children[1].value, end:r.children[2].value}; });
+  if(Object.values(defs).some(t=>!t.start||!t.end)){ $('setErr').textContent='Every day needs a start and end time.'; $('setErr').hidden=false; return; }
+  try{ apply(await api('POST',{op:'settings',employees:emps,defaults:defs})); $('settings').close(); status('Settings saved'); }
+  catch(err){ $('setErr').textContent='Could not save: '+err.message; $('setErr').hidden=false; }
+};
+
+/* Server */
 async function api(method, body){
   const res = await fetch('/api/shifts', {method, headers:{'content-type':'application/json','x-apex-password':password}, body: body?JSON.stringify(body):undefined, cache:'no-store'});
   const data = await res.json().catch(()=>({}));
   if(!res.ok){ const e=new Error(data.error||('Server error '+res.status)); e.status=res.status; throw e; }
   return data;
 }
-function setShifts(list){ entries=(list||[]).filter(e=>e.name&&e.date&&typeof e.hours==='number'); status(entries.length+' shifts saved'); render(); }
 async function refresh(){
-  try{ setShifts((await api('GET')).shifts); }
+  try{ const d=await api('GET'); apply(d); status(shifts.length+' shifts saved'); }
   catch(err){
     if(err.status===401){ try{ sessionStorage.removeItem('apexPw'); }catch{} location.reload(); return; }
     status('Could not load shifts: '+err.message, true);
@@ -366,24 +454,22 @@ async function refresh(){
 }
 
 let started=false;
-async function start(){
+function start(){
   if(started) return; started=true;
   $('lock').hidden=true; $('app').hidden=false;
-  setRangeToMonth(); render();
-  if(!entries.length) await refresh();
-  // pick up shifts other people logged
-  setInterval(()=>{ if(!document.hidden && !$('dlg').open) refresh(); }, 30000);
-  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) refresh(); });
+  setRangeToView(); render();
+  // pick up changes other people made
+  setInterval(()=>{ if(!document.hidden && !$('dlg').open && !$('settings').open) refresh(); }, 30000);
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden && !$('settings').open) refresh(); });
 }
 
 $('lockForm').addEventListener('submit', async ev=>{
   ev.preventDefault();
   password=$('pin').value;
-  try{ const d=await api('GET'); try{ sessionStorage.setItem('apexPw',password); }catch{} setShifts(d.shifts); await start(); }
+  try{ const d=await api('GET'); try{ sessionStorage.setItem('apexPw',password); }catch{} start(); apply(d); status(shifts.length+' shifts saved'); }
   catch(err){ $('pinErr').textContent = err.status===401 ? 'Wrong password. Try again.' : 'Could not reach the server: '+err.message; $('pinErr').hidden=false; $('pin').value=''; $('pin').focus(); }
 });
 try{ password=sessionStorage.getItem('apexPw')||''; }catch{}
-if(password) start(); else $('pin').focus();
+if(password){ start(); refresh(); } else $('pin').focus();
 </script>
-
 </body></html>

@@ -1,6 +1,6 @@
 # Apex Hours
 
-Shift-hours calendar for Apex Training Centre. Tap a day to log a shift (employee, start and end time); the calendar shows initials and times (e.g. `JD 2-9pm`), and the bottom of the page totals hours per employee for any date range. Month and 2-week views, editable shifts, password lock screen.
+Shift-hours calendar for Apex Training Centre. Tap a day, check the shift time (filled in from that weekday's default), then tap an employee's initials to log it. The calendar shows initials and times (e.g. `JD 2-9pm`), and the bottom of the page totals hours per employee for any date range. Weeks start on Sunday. Month and 2-week views, editable shifts, a Settings screen for employees and default shift times, and a password lock screen.
 
 ## Files
 
@@ -10,7 +10,7 @@ Shift-hours calendar for Apex Training Centre. Tap a day to log a shift (employe
 
 ## Where shifts are saved
 
-All shifts live in one private JSON file (`apex/shifts.json`) in Vercel Blob file storage. There is no database. Anyone who unlocks the page with the password can add, edit and remove shifts, and the changes are saved for everyone.
+Shifts, employees and default shift times all live in one private JSON file (`apex/shifts.json`) in Vercel Blob file storage. There is no database. Anyone who unlocks the page with the password can add, edit and remove shifts, and the changes are saved for everyone.
 
 ## One-time Vercel setup
 
